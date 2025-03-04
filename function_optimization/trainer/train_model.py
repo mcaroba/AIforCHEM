@@ -60,6 +60,10 @@ sigma_xy = 5.
 
 
 
+############################################################################
+#
+# Model training
+#
 z = np.array(data_array)[:,2] - mean
 def cov(i1, j1, i2, i3, sigma_z, sigma_xy):
     return sigma_z**2 * np.exp(-0.5*( (i1-i2)**2 + (j1-j2)**2 )/sigma_xy**2 )
@@ -110,7 +114,16 @@ for k1 in range(0, 29**2):
 
 # Covariance at the evaluation points (for error estimation)
 cov_m_model = cov_m - np.dot(np.dot(cov_m_data2, cov_m_data_inv), np.transpose(cov_m_data2))
+############################################################################
 
+
+
+
+
+############################################################################
+#
+# File saves
+#
 # Save current model
 f = open("model.dat", "w")
 for j in range(0, 29):
@@ -121,41 +134,25 @@ for j in range(0, 29):
 
 f.close()
 
-
 # Save current data
 f = open("data.dat", "w")
 for k in range(0, len(data)):
     print(data[k][0], data[k][1], data[k][2], data[k][3], file=f)
 
 f.close()
+############################################################################
 
 
+
+
+
+############################################################################
+#
+# Plotting
+#
 # Plot model's current predictions and uncertainty
 x = np.zeros([29,29]); y = np.zeros([29,29])
 z = np.zeros([29,29]); z_err = np.zeros([29,29])
-#z = np.zeros([29,29,4]); z_err = np.zeros([29,29,4])
-def rgb_z(z):
-    if z < 1.:
-        return (0.5,0,1,1)
-    elif z >= 1. and z < 2.:
-        return (0,0,1,1)
-    elif z >= 2. and z < 3.:
-        return (0,1,0,1)
-    elif z >= 3. and z < 4.:
-        return (1,1,0,1)
-    elif z >= 4.:
-        return (1,0,0,1)
-def rgb_z_err(z):
-    if z < 0.35:
-        return (0.5,0,1,1)
-    elif z >= 0.35 and z < 0.7:
-        return (0,0,1,1)
-    elif z >= 0.7 and z < 1.05:
-        return (0,1,0,1)
-    elif z >= 1.05 and z < 1.4:
-        return (1,1,0,1)
-    elif z >= 1.4:
-        return (1,0,0,1)
 
 for j in range(0, 29):
     for i in range(0, 29):
@@ -163,9 +160,7 @@ for j in range(0, 29):
         x[i, j] = i+1
         y[i, j] = j+1
         z[i, j] = mu_model[k]
-#        z[i, j] = rgb_z(mu_model[k])
         z_err[i, j] = np.sqrt(cov_m_model[k,k])
-#        z_err[i, j] = rgb_z_err(np.sqrt(cov_m_model[k,k]))
 
 # Matplotlib magic
 fig, axs = plt.subplots(1, 2, figsize=(15,5))
@@ -178,10 +173,6 @@ axs[0].set(xlim=(0,30), ylim=(0,30))
 axs[0].set_title("Model")
 axs[0].set_xticks(np.arange(0,32,2))
 axs[0].set_yticks(np.arange(0,32,2))
-#psm = axs[0].pcolormesh(x, y, z, vmin=0, vmax=5, rasterized=True, cmap=cmap,
-#                        shading="none")
-#psm = axs[0].imshow(np.transpose(z, (1,0,2)), vmin=0, vmax=5, rasterized=True, cmap=cmap,
-#                    interpolation="none", origin="lower")
 psm = axs[0].imshow(np.transpose(z), vmin=0, vmax=5, rasterized=True, cmap=cmap,
                     interpolation="none", origin="lower", extent=(0.5,29.5,0.5,29.5))
 fig.colorbar(psm, ax=axs[0], ticks=[0,1,2,3,4,5])
@@ -201,10 +192,6 @@ axs[1].set(xlim=(0,30), ylim=(0,30))
 axs[1].set_title("Model uncertainty")
 axs[1].set_xticks(np.arange(0,32,2))
 axs[1].set_yticks(np.arange(0,32,2))
-#psm = axs[1].pcolormesh(x, y, z_err, vmin=0, vmax=1.75, rasterized=True, cmap=cmap,
-#                        shading="none")
-#psm = axs[1].imshow(np.transpose(z_err, (1,0,2)), vmin=0, vmax=1.75, rasterized=True, cmap=cmap,
-#                    interpolation="none", origin="lower")
 psm = axs[1].imshow(np.transpose(z_err), vmin=0, vmax=1.75, rasterized=True, cmap=cmap,
                     interpolation="none", origin="lower", extent=(0.5,29.5,0.5,29.5))
 fig.colorbar(psm, ax=axs[1], ticks=[0.,0.25,0.5,0.75,1.,1.25,1.5,1.75])
@@ -219,4 +206,4 @@ axs[1].plot(x_dat, y_dat, "x", markersize=8, markeredgewidth=3, color="black")
 axs[1].plot(x_dat, y_dat, "x", markersize=6, markeredgewidth=1, color="green")
 
 plt.show()
-
+############################################################################
