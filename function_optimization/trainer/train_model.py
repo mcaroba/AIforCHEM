@@ -46,8 +46,8 @@ if use_priors:
     # Mean of the function
     mean = 2.5
 else:
-    sigma_z = np.std(np.array(data_array[:,2]))
-    mean = np.mean(np.array(data_array[:,2]))
+    sigma_z = np.std(np.array(data_array)[:,2])
+    mean = np.mean(np.array(data_array)[:,2])
 
 # Characteristic distance in xy (i-j) plane
 sigma_xy = 5.
