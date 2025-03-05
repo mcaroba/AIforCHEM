@@ -65,7 +65,7 @@ sigma_xy = 5.
 # Model training
 #
 z = np.array(data_array)[:,2] - mean
-def cov(i1, j1, i2, i3, sigma_z, sigma_xy):
+def cov(i1, j1, i2, j2, sigma_z, sigma_xy):
     return sigma_z**2 * np.exp(-0.5*( (i1-i2)**2 + (j1-j2)**2 )/sigma_xy**2 )
 
 
