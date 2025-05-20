@@ -22,7 +22,7 @@ digits = datasets.load_digits()
 # Plot a sample of all the digits in the database
 _, axes0 = plt.subplots(nrows=4, ncols=10, figsize=(10, 5))
 axes = []
-for irow in range(0, nrows):
+for irow in range(0, len(axes0)):
     for ax in axes0[irow]:
         axes.append(ax)
 
@@ -56,7 +56,7 @@ print("")
 print("Predicted vs original label (P:L)")
 _, axes0 = plt.subplots(nrows=4, ncols=10, figsize=(10, 5))
 axes = []
-for irow in range(0, nrows):
+for irow in range(0, len(axes0)):
     for ax in axes0[irow]:
         axes.append(ax)
 
