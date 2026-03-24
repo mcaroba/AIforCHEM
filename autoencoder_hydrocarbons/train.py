@@ -229,7 +229,7 @@ m0, dist0 = unflatten_upper_triangle(desc[i_rand], use_charge, 9, 14) # Coulomb 
 v = autoencode(weights, bias, desc[i_rand])
 m, dist = unflatten_upper_triangle(v, use_charge, 9, 14) # Autoencoded Coulomb matrix of first structure
 
-# Get Cartesian coordinates from Coulomg matrix
+# Get Cartesian coordinates from Coulomb matrix
 mds = MDS(n_components=3, dissimilarity="precomputed", n_init=100)
 xyz0 = mds.fit_transform(dist0) # Original CM
 xyz = mds.fit_transform(dist) # Autoencoded CM
