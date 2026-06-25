@@ -72,12 +72,12 @@ def cov(i1, j1, i2, j2, sigma_z, sigma_xy):
 # Compute grid properties (where we evaluate the model)
 cov_m = np.zeros( [29**2, 29**2] )
 for k1 in range(0, 29**2):
-    i1 = k1 % 29
-    j1 = k1 // 29
+    i1 = k1 % 29 + 1
+    j1 = k1 // 29 + 1
     cov_m[k1, k1] = sigma_z**2
     for k2 in range(k1+1, 29**2):
-        i2 = k2 % 29
-        j2 = k2 // 29
+        i2 = k2 % 29 + 1
+        j2 = k2 // 29 + 1
         cov_m[k1, k2] = cov(i1, j1, i2, j2, sigma_z, sigma_xy)
         cov_m[k2, k1] = cov_m[k1, k2]
 
@@ -101,8 +101,8 @@ alphas = np.dot(cov_m_data_inv, z) # Fitting coefficients (or "weights")
 mu_model = np.zeros(29**2)
 
 for k1 in range(0, 29**2):
-    i1 = k1 % 29
-    j1 = k1 // 29
+    i1 = k1 % 29 + 1
+    j1 = k1 // 29 + 1
     covs = np.zeros(len(data))
     for k2 in range(0, len(data)):
         i2 = data[k2][0]
